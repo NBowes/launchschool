@@ -22,6 +22,20 @@ def operator_message(op)
   end
 end
 
+puts "What is your name?"
+name = nil
+
+loop do
+  name = gets.chomp
+
+  if name.empty?
+    puts "Plese make sure to enther your name"
+  else
+    break
+  end
+end
+
+puts "Hey #{name}!"
 loop do
   number1 = nil
   loop do
@@ -81,6 +95,6 @@ loop do
 end
 
 puts <<-MSG
-Thanks for using the calculator.
+Thanks for using the calculator #{name}.
 To start it again type 'ruby updated_calculator.rb' and press enter.
 MSG
