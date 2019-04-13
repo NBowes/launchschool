@@ -5,8 +5,27 @@
 # ask if you want to do another calculation
 # goodbye message
 
-def valid_number?(num)
-  num.to_i != 0
+# add English and Spanish messages to YAML file
+
+require 'yaml'
+require 'pry'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+LANGUAGE = 'sp'
+
+def message(message, lang)
+  MESSAGES[lang][message]
+end
+
+def integer?(num)
+  num.to_i.to_s == num
+end
+
+def float?(num)
+  num.to_f.to_s == num
+end
+
+def number?(num)
+  integer?(num) || float?(num)
 end
 
 def operator_message(operator)
@@ -22,13 +41,13 @@ def operator_message(operator)
   end
 end
 
-puts 'What is your name?'
+puts message('name', LANGUAGE)
 name = nil
 
 loop do
   name = gets.chomp
 
-  puts 'Plese make sure to enther your name' if name.empty?
+  puts message('invalid_name', LANGUAGE) if name.empty?
   break if name
 end
 
@@ -36,25 +55,25 @@ puts "Hey #{name}!"
 loop do
   number1 = nil
   loop do
-    puts 'What is your first number?'
+    puts message('first_number', LANGUAGE)
     number1 = gets.chomp
 
-    break if valid_number?(number1)
+    break if number?(number1)
 
-    puts "Hmm.. that number doesn't look right."
+    puts message('invalid_number', LANGUAGE)
   end
 
   number2 = nil
   loop do
-    puts 'What is your second number?'
+    puts message('second_number', LANGUAGE)
     number2 = gets.chomp
 
-    break if valid_number?(number2)
+    break if number?(number2)
 
-    puts "Hmm.. that number doesn't look right."
+    puts message('invalid_number', LANGUAGE)
   end
 
-  puts 'What operation should we do? 1.add, 2.subtract, 3.multiply, 4.divide?'
+  puts message('operator_choice_message', LANGUAGE)
 
   operator = nil
   loop do
@@ -62,7 +81,7 @@ loop do
 
     break if %(1,2,3,4).include?(operator)
 
-    puts 'You must choose 1,2,3, or 4'
+    puts message('invalid_operator', LANGUAGE)
   end
 
   operator_message(operator)
@@ -78,14 +97,11 @@ loop do
              number1.to_f / number2.to_f
            end
 
-  puts "The result is #{result}"
-  puts 'Do you want to do another calculation? (N to quit)'
+  puts "The result is #{result.round(2)}"
+  puts message('another_calculation', LANGUAGE)
   answer = gets.chomp
 
   break if answer.casecmp('n').zero?
 end
 
-puts <<-MSG
-  Thanks for using the calculator #{name}.
-  To start it again type 'ruby updated_calculator.rb' and press enter.
-MSG
+puts message('end_program', LANGUAGE)

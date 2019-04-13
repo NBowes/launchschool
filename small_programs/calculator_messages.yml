@@ -1,0 +1,25 @@
+---
+en:
+  name: 'What is your name?'
+  invalid_name: 'Plese make sure to enther your name'
+  first_number: 'What is your first number?'
+  second_number: 'What is your second number?'
+  invalid_number: "Hmm.. that number doesn't look right."
+  operator_choice_message: 'What operation should we do? 1.add, 2.subtract, 3.multiply, 4.divide?'
+  invalid_operator: 'You must choose 1, 2, 3, or 4'
+  another_calculation: 'Do you want to do another calculation? (N to quit)'
+  end_program: >
+    Thanks for using the calculator.
+    To start it again type 'ruby updated_calculator.rb' and press enter.
+sp:
+  name: '¿Cuál es su nombre?'
+  invalid_name: 'Por favor, asegúrese de escribir su nombre'
+  first_number: '¿Cuál es tu primer número?'
+  second_number: '¿Cuál es tu segundo número?'
+  invalid_number: 'Hmm ... ese número no se ve bien.'
+  operator_choice_message: '¿Qué operación debemos hacer? 1.suma, 2.resta, 3.multiplica, 4.divide?'
+  invalid_operator: 'Debes elegir 1, 2, 3 o 4'
+  another_calculation: '¿Quieres hacer otro cálculo? (N para dejar de fumar)'
+  end_program: >
+    Gracias por usar la calculadora.
+    Para volver a iniciarlo, escriba 'ruby updated_calculator.rb' y presione enter.
