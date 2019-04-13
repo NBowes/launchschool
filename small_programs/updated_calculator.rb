@@ -5,12 +5,9 @@
 # ask if you want to do another calculation
 # goodbye message
 
-# add English and Spanish messages to YAML file
-
 require 'yaml'
-require 'pry'
 MESSAGES = YAML.load_file('calculator_messages.yml')
-LANGUAGE = 'sp'
+LANGUAGE = 'sp'.freeze
 
 def message(message, lang)
   MESSAGES[lang][message]
@@ -31,13 +28,13 @@ end
 def operator_message(operator)
   case operator
   when '1'
-    puts 'Adding numbers...'
+    puts message('add', LANGUAGE)
   when '2'
-    puts 'Subtracting numbers...'
+    puts message('subtract', LANGUAGE)
   when '3'
-    puts 'Multiplying numbers...'
+    puts message('multiply', LANGUAGE)
   when '4'
-    puts 'Dividing numbers...'
+    puts message('divide', LANGUAGE)
   end
 end
 
@@ -51,7 +48,7 @@ loop do
   break if name
 end
 
-puts "Hey #{name}!"
+puts message('hello', LANGUAGE) + name + '!'
 loop do
   number1 = nil
   loop do
@@ -97,7 +94,7 @@ loop do
              number1.to_f / number2.to_f
            end
 
-  puts "The result is #{result.round(2)}"
+  puts message('result', LANGUAGE) + result.round(2)
   puts message('another_calculation', LANGUAGE)
   answer = gets.chomp
 
