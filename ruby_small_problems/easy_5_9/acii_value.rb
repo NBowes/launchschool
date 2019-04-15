@@ -1,7 +1,7 @@
 def acii_value(string)
-  characters = string.chars 
+  characters = string.chars
   sum = 0
-  characters.map { |char| sum += char.ord}
+  characters.map { |char| sum += char.ord }
   sum
 end
 
