@@ -15,4 +15,4 @@ def fibonacci(digits)
   f_num.length
 end
 
-p fibonacci(10000)
+p fibonacci(10_000)
