@@ -67,9 +67,17 @@ def display_score(score)
   prompt("Player: #{score[:player]}, Computer: #{score[:computer]}")
 end
 
+def welcome
+  prompt("Welcome to #{VALID_CHOICES.map{|word| word.capitalize}.join(', ')}!")
+  prompt("Rules: #{RULES.join(' ')}")
+end
+
+welcome
+
 loop do
-  choice = nil
+
   prompt("What is your choice? (#{VALID_CHOICES.join(', ')})")
+  choice = nil
   loop do
     choice = gets.chomp
 
