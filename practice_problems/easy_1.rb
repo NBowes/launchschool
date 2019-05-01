@@ -17,13 +17,20 @@ end
 
 number = 2
 
-how_deep = "number"
-5.times {how_deep.gsub!("number", "add_eight(number)") }
+how_deep = 'number'
+5.times { how_deep.gsub!('number', 'add_eight(number)') }
 
 p how_deep
-eval(how_deep)
+p eval(how_deep)
 
 # return only Barney and value in an array
-flintstones = { "Fred" => 0, "Wilma" => 1, "Barney" => 2, "Betty" => 3, "BamBam" => 4, "Pebbles" => 5 }
+flintstones = {
+  'Fred' => 0,
+  'Wilma' => 1,
+  'Barney' => 2,
+  'Betty' => 3,
+  'BamBam' => 4,
+  'Pebbles' => 5
+}
 
-p flintstones.assoc("Barney")
+p flintstones.assoc('Barney')
