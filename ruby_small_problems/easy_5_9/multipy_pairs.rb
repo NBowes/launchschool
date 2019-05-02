@@ -1,8 +1,8 @@
-def multiply_pairs(arr1,arr2)
+def multiply_pairs(arr1, arr2)
   product_array = []
-  arr1.each do |num_1|
-    arr2.each do |num_2|
-      product_array << num_1 * num_2
+  arr1.each do |num1|
+    arr2.each do |num2|
+      product_array << num1 * num2
     end
   end
   product_array.sort
