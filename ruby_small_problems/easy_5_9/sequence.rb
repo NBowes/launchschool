@@ -1,10 +1,8 @@
-=begin
-Create a method that takes two integers as arguments.
-The first argument is a count, and the second is the first number
-of a sequence that your method will create. The method should return
-an Array that contains the same number of elements as the count argument,
-while the values of each element will be multiples of the starting number.
-=end
+# Create a method that takes two integers as arguments.
+# The first argument is a count, and the second is the first number
+# of a sequence that your method will create. The method should return
+# an Array that contains the same number of elements as the count argument,
+# while the values of each element will be multiples of the starting number.
 
 def sequence(count, first_num)
   number_array = []
@@ -18,12 +16,12 @@ def sequence(count, first_num)
   number_array
 end
 
-p sequence(4,-7)
+p sequence(4, -7)
 
 ## alternate
 
 def seq(count, first)
-  (1..count).map { |index| index * first}
+  (1..count).map { |index| index * first }
 end
 
-p seq(4,-7)
+p seq(4, -7)
