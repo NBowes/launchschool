@@ -41,7 +41,9 @@ def just_fruits(produce_list)
 
   loop do
     current_product = produce_keys[count]
-    fruit[current_product] = produce_list[current_product] if produce_list[current_product] == 'Fruit'
+    if produce_list[current_product] == 'Fruit'
+      fruit[current_product] = produce_list[current_product]
+    end
     count -= 1
     break if count < 0
   end
@@ -49,7 +51,7 @@ def just_fruits(produce_list)
   fruit
 end
 
-p just_fruits(produce) == { 'apple' => 'Fruit', 'pear' => 'Fruit' } 
+p just_fruits(produce) == { 'apple' => 'Fruit', 'pear' => 'Fruit' }
 
 ## transform
 
@@ -59,7 +61,8 @@ def double_numbers(numbers)
 
   loop do
     break if count == numbers.size
-      doubled << numbers[count] * 2
+
+    doubled << numbers[count] * 2
     count += 1
   end
   doubled
@@ -76,7 +79,8 @@ def doubled(numbers, multiplier)
 
   loop do
     break if count == numbers.size
-      doubled << numbers[count] * multiplier
+
+    doubled << numbers[count] * multiplier
     count += 1
   end
   doubled
