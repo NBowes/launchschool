@@ -4,16 +4,15 @@
 def rotation(array)
   last_element = array.shift
   rotated_array = []
-  count = 0
 
-  for element in array
+  array.each do |element|
     rotated_array << element unless element == last_element
   end
   rotated_array << last_element
   rotated_array
 end
 
-array = ['a', 'b', 'c']
+array = %w[a b c]
 p rotation(array)
 
 def rotate_string(string)
@@ -33,11 +32,11 @@ def rotate(array)
   array[1..-1] + [array[0]]
 end
 
-arr = [1,2,3]
+arr = [1, 2, 3]
 p rotate(arr)
 
-# add another argument to the method to let you choose which element gets rotated
-# use right most character to start, 1 would result in the same array being returned
+# add another argument to the method to choose which element gets rotated
+# use right most character to start, 1 results in same array being returned
 
 def rotate_from_right(number, n)
   number_arr = number.to_s.chars
@@ -45,14 +44,14 @@ def rotate_from_right(number, n)
   number_arr.join.to_i
 end
 
-p rotate_from_right(4567,2)
+p rotate_from_right(4567, 2)
 
 def max_rotation(number)
   count = number.to_s.size
 
-  until count == 0
-    number = rotate_from_right(number,count)
-    count -=1
+  until count.zero?
+    number = rotate_from_right(number, count)
+    count -= 1
   end
 
   # count.downto(2) do |n|
@@ -61,4 +60,4 @@ def max_rotation(number)
   number
 end
 
-p max_rotation(735291) == 321579
+p max_rotation(735_291) == 321_579
