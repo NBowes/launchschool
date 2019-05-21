@@ -38,9 +38,9 @@ p rotate(arr)
 # add another argument to the method to choose which element gets rotated
 # use right most character to start, 1 results in same array being returned
 
-def rotate_from_right(number, n)
+def rotate_from_right(number, num)
   number_arr = number.to_s.chars
-  number_arr[-n..-1] = rotate(number_arr[-n..-1])
+  number_arr[-num..-1] = rotate(number_arr[-num..-1])
   number_arr.join.to_i
 end
 
