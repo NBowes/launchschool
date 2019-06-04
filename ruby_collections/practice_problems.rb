@@ -1,4 +1,4 @@
-[1,2,3].select do |num|
+[1, 2, 3].select do |num|
   num > 5
   'hi'
 end
@@ -7,7 +7,7 @@ end
 # 'hi' returns a truthy value
 # => [1, 2, 3]
 
-[1,2,3].reject do |num|
+[1, 2, 3].reject do |num|
   puts num
 end
 
@@ -15,7 +15,7 @@ end
 # nil is false
 # => [1, 2, 3]
 
-['ant', 'bear', 'cat'].each_with_object({}) do |value, hash|
+%w[ant bear caterpiller].each_with_object({}) do |value, hash|
   hash[value[0]] = value
 end
 
@@ -23,7 +23,7 @@ end
 # value[0] is the first letter of each word
 # => {a: 'ant', b: 'bear', c: 'cat'}
 
-['ant', 'bear', 'caterpiller'].pop.size
+%w[ant bear caterpiller].pop.size
 
 # pop removes the last item from the array
 # size is called on the return value
@@ -35,12 +35,10 @@ arr.take(2)
 # => [1, 2]
 # arr = [1, 2, 3, 4, 5]
 
-{ a: 'ant', b: 'bear' }.map do |key, value|
-  if value.size > 3
-    value
-  end
+{ a: 'ant', b: 'bear' }.map do |_, value|
+  value if value.size > 3
 end
 
-# map returns an array 
+# map returns an array
 # if returns nil when it returns false
 # => [nil, 'bear']
