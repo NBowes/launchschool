@@ -2,9 +2,10 @@
 # F(2) = 1
 # F(n) = F(n - 1) + F(n - 2) where n > 2
 
-def fibonacci(n)
-  return 1 if n <= 2
-  fibonacci(n - 1) + fibonacci(n - 2)
+def fibonacci(nth)
+  return 1 if nth <= 2
+
+  fibonacci(nth - 1) + fibonacci(nth - 2)
 end
 
 p fibonacci(1) == 1
