@@ -17,7 +17,7 @@ def triangle(a, b, c)
   sides = [a, b, c]
   longest_side = sides.max
   if 2 * longest_side > sides.reduce(&:+) ||
-    sides.include?(0)
+     sides.include?(0)
     :invalid
   elsif a == b && b == c
     :equilateral
