@@ -12,11 +12,14 @@
 SPACE = ' '.freeze
 PLAYER_MARKER = 'X'.freeze
 COMPUTER_MARKER = 'O'.freeze
-
+WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9],
+                 [1, 4, 7], [2, 5, 8], [3, 6, 9],
+                 [1, 5, 9], [3, 5, 7]]
 def prompt(msg)
   puts msg
 end
 
+# rubocop:disable Metrics/AbcSize
 def show_board(brd)
   system 'clear'
   puts "=== You are #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER} ==="
@@ -32,6 +35,7 @@ def show_board(brd)
   puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
   puts "     |     |"
 end
+# rubocop:enable Metrics/AbcSize
 
 def initialize_board
   new_board = {}
@@ -68,17 +72,12 @@ def winner?(brd)
 end
 
 def find_winner(brd)
-  win_lines = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
-              [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
-              [[1, 5, 9], [3, 5, 7]]
-  win_lines.each do |line|
-    if brd[line[0]] == PLAYER_MARKER &&
-       brd[line[1]] == PLAYER_MARKER &&
-       brd[line[2]] == PLAYER_MARKER
+  WINNING_LINES.each do |line|
+    # https://ruby-doc.org/core-2.4.1/Hash.html#method-i-values_at
+
+    if brd.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 3
       return 'Player'
-    elsif brd[line[0]] == COMPUTER_MARKER &&
-          brd[line[1]] == COMPUTER_MARKER &&
-          brd[line[2]] == COMPUTER_MARKER
+    elsif brd.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 3
       return 'Computer'
     end
   end
