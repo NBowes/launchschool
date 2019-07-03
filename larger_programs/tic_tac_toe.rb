@@ -8,7 +8,8 @@
 # 8. Play again?
 # 9. If yes, go to #1
 # 10. Good bye!
-
+require 'pry'
+require 'pry-byebug'
 SPACE = ' '.freeze
 PLAYER_MARKER = 'X'.freeze
 COMPUTER_MARKER = 'O'.freeze
@@ -40,7 +41,7 @@ end
 # rubocop:enable Metrics/AbcSize
 def initialize_board
   new_board = {}
-  (1..9).each { |num| new_board[num] = ' ' }
+  (1..9).each { |num| new_board[num] = SPACE }
   new_board
 end
 
@@ -73,8 +74,26 @@ def player_place_marker(brd)
   brd[choice] = PLAYER_MARKER
 end
 
+def find_danger_square(line, brd)
+  if brd.values_at(*line).count(PLAYER_MARKER) == 2
+    brd.select { |k, v| line.include?(k) && v == SPACE }.keys.first
+  else
+    nil
+  end
+end
+
 def computer_place_marker(brd)
-  choice = empty_spaces(brd).sample
+  choice = nil
+
+  WINNING_LINES.each do |line|
+    choice = find_danger_square(line, brd)
+    break if choice
+  end
+
+  if !choice
+    choice = empty_spaces(brd).sample
+  end
+
   brd[choice] = COMPUTER_MARKER
 end
 
@@ -86,10 +105,10 @@ end
 def find_winner(brd)
   WINNING_LINES.each do |line|
     # https://ruby-doc.org/core-2.4.1/Hash.html#method-i-values_at
-
-    if brd.values_at(line[0], line[1], line[2]).count(PLAYER_MARKER) == 3
+    # (*line) == (line[0], line[1], line[2])
+    if brd.values_at(*line).count(PLAYER_MARKER) == 3
       return 'Player'
-    elsif brd.values_at(line[0], line[1], line[2]).count(COMPUTER_MARKER) == 3
+    elsif brd.values_at(*line).count(COMPUTER_MARKER) == 3
       return 'Computer'
     end
   end
