@@ -20,9 +20,10 @@ def prompt(msg)
 end
 
 # rubocop:disable Metrics/AbcSize
-def show_board(brd)
+def show_board(brd, score)
   system 'clear'
   puts "=== You are #{PLAYER_MARKER}. Computer is #{COMPUTER_MARKER} ==="
+  display_score(score)
   puts "     |     |"
   puts "  #{brd[1]}  |  #{brd[2]}  |  #{brd[3]}"
   puts "     |     |"
@@ -35,8 +36,8 @@ def show_board(brd)
   puts "  #{brd[7]}  |  #{brd[8]}  |  #{brd[9]}"
   puts "     |     |"
 end
-# rubocop:enable Metrics/AbcSize
 
+# rubocop:enable Metrics/AbcSize
 def initialize_board
   new_board = {}
   (1..9).each { |num| new_board[num] = ' ' }
@@ -47,11 +48,22 @@ def empty_spaces(brd)
   brd.keys.select { |num| brd[num] == SPACE }
 end
 
+def joinor(arr, sep = ', ', word = 'or')
+  case arr.size
+  when 0 then ''
+  when 1 then arr.first
+  when 2 then arr.join(" #{word} ")
+  else
+    arr[-1] = "#{word} #{arr.last}"
+    arr.join(sep)
+  end
+end
+
 def player_place_marker(brd)
   choice = ''
 
   loop do
-    prompt("please choose a square (#{empty_spaces(brd).join(', ')})")
+    prompt("please choose a square (#{joinor(empty_spaces(brd))})")
     choice = gets.chomp.to_i
     break if empty_spaces(brd).include?(choice)
 
@@ -84,31 +96,55 @@ def find_winner(brd)
   nil
 end
 
+def keep_score(brd, score)
+  if find_winner(brd) == 'Player'
+    score[:player] += 1
+  elsif find_winner(brd) == 'Computer'
+    score[:computer] += 1
+  end
+end
+
+def display_score(score)
+  prompt("The score is Player: #{score[:player]} Computer: #{score[:computer]}")
+end
+
 def board_full?(brd)
   empty_spaces(brd).empty?
 end
 
-board = initialize_board
+def display_winner(score)
+  if score[:player] == 5
+    prompt('Player wins!')
+  elsif score[:computer] == 5
+    prompt('Computer wins...how did that happen?')
+  end
+end
 
 loop do
+  score = { player: 0, computer: 0 }
   loop do
-    show_board(board)
+    board = initialize_board
+    loop do
+      show_board(board, score)
 
-    player_place_marker(board)
-    break if winner?(board) || board_full?(board)
+      player_place_marker(board)
+      break if winner?(board) || board_full?(board)
 
-    computer_place_marker(board)
-    break if winner?(board) || board_full?(board)
+      computer_place_marker(board)
+      break if winner?(board) || board_full?(board)
+    end
+
+    show_board(board, score)
+
+    if winner?(board)
+      keep_score(board, score)
+    else
+      prompt('Its a tie')
+    end
+    display_score(score)
+    break if score[:player] == 5 || score[:computer] == 5
   end
-
-  show_board(board)
-
-  if winner?(board)
-    prompt("#{find_winner(board)} won!")
-  else
-    prompt('Its a tie')
-  end
-
+  display_winner(score)
   prompt('Do you want to play again? (y or n)')
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
