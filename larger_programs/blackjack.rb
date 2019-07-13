@@ -27,25 +27,23 @@ def initalize_cards
 end
 
 def total(cards)
-  values = cards.map{ |card| card[1] }
+  values = cards.map { |card| card[1] }
 
   sum = 0
   values.each do |value|
-    if value == 'A'
-      sum += 11
-    elsif value.to_i == 0
-      sum += 10
-    else
-      sum += value.to_i
-    end
+    sum += if value == 'A'
+             11
+           elsif value.to_i == 0
+             10
+           else
+             value.to_i
+           end
   end
 
-  num_aces = values.select{ |card| card == 'A'}.size
-  num_aces.times do
+  values.select { |card| card == 'A' }.size.times do
     sum -= 10 if sum > 21
   end
   sum
-
 end
 
 def busted?(cards)
@@ -54,7 +52,7 @@ end
 
 cards = initalize_cards
 loop do
-# player turn
+  # player turn
   answer = nil
   player_cards = cards.pop(2)
   loop do
@@ -67,19 +65,19 @@ loop do
   end
 
   if busted?(player_cards)
-    # end game
+    prompt("You busted!")
   else
     prompt("You chose to stay.")
   end
 
   prompt("Dealer...")
   # dealer turn
-
   loop do
     dealer_cards = cards.pop(2)
     loop do
       p dealer_cards
-      break if total(dealer_cards) >= 17 
+      break if total(dealer_cards) >= 17
+
       dealer_cards << cards.shift
     end
 
@@ -92,4 +90,3 @@ loop do
   end
   break
 end
-
