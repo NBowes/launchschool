@@ -64,6 +64,13 @@ def prompt(msg)
   puts msg
 end
 
+def results(p_cards, d_cards)
+  prompt('+++++++++++++++++++++')
+  prompt("| Player score: #{total(p_cards)}  |")
+  prompt("| Dealer score: #{total(d_cards)}  |")
+  prompt('+++++++++++++++++++++')
+end
+
 def total(cards)
   values = cards.map { |card| card[1] }
 
@@ -110,20 +117,20 @@ loop do
   # dealer turn
   dealer_cards = cards.pop(2)
   loop do
-    loop do
-      prompt("Dealer has #{total(dealer_cards)}")
-      break if total(dealer_cards) >= 17
+    prompt("Dealer has #{total(dealer_cards)}")
+    break if total(dealer_cards) >= 17
 
-      dealer_cards << cards.shift
-    end
-
-    if busted?(dealer_cards)
-      prompt("Dealer bust!")
-    else
-      prompt("Dealer stays with #{total(dealer_cards)}")
-    end
-    break
+    dealer_cards << cards.shift
   end
+
+  if busted?(dealer_cards)
+    prompt("Dealer bust!")
+  else
+    prompt("Dealer stays with #{total(dealer_cards)}")
+  end
+
+  results(player_cards, dealer_cards)
   display_winner(player_cards, dealer_cards)
+
   break
 end
