@@ -12,10 +12,7 @@ def busted?(cards)
   total(cards) > 21
 end
 
-def determine_winner(p_cards, d_cards)
-  p_score = total(p_cards)
-  d_score = total(d_cards)
-
+def determine_winner(p_score, d_score)
   if p_score > 21
     'Player Busted'
   elsif d_score > 21
@@ -29,21 +26,49 @@ def determine_winner(p_cards, d_cards)
   end
 end
 
-def display_winner(p_cards, d_cards)
-  result = determine_winner(p_cards, d_cards)
+def display_score(score)
+  prompt('-------------------------------')
+  prompt("Player score: #{score[:player]}")
+  prompt("Dealer score: #{score[:dealer]}")
+  prompt('-------------------------------')
+end
+
+def display_winner(score)
+  winner = score.key(5)
+
+  case winner
+  when :player
+    prompt('Player wins it all!!')
+  when :dealer
+    prompt('Dealer wins - aww man!!')
+  end
+end
+
+def display_winner_message(p_cards, d_cards, score)
+  p_total = total(p_cards)
+  d_total = total(d_cards)
+  result = determine_winner(p_total, d_total)
 
   case result
   when 'Player Busted'
-    prompt('Dealer wins..womp womp')
+    prompt('Player busted..Dealer wins')
+    score[:dealer] += 1
   when 'Dealer Busted'
-    prompt('Player wins!!')
+    prompt('Dealer busted...Player wins!!')
+    score[:player] += 1
   when 'Player'
     prompt('Player wins!!')
+    score[:player] += 1
   when 'Dealer'
     prompt('Dealer wins..womp womp')
+    score[:dealer] += 1
   when 'Tie'
     prompt('It is a tie..woh.')
   end
+end
+
+def find_winner?(score)
+  score.values.include?(5)
 end
 
 def initalize_cards
@@ -99,31 +124,43 @@ def total(cards)
 end
 
 cards = initalize_cards
+score = { player: 0, dealer: 0 }
+prompt('---------------------------------------')
+prompt('Welcome to Blackjack - First to 5 wins!')
+prompt('---------------------------------------')
+
 loop do
+  p find_winner?(score)
   # player turn
   answer = nil
   player_cards = cards.pop(2)
+  dealer_cards = cards.pop(2)
   loop do
+    prompt('')
     prompt("Player has #{total(player_cards)}")
-    break if busted?(player_cards)
+    break if busted?(player_cards) || total(player_cards) == 21
 
-    prompt("Hit or Stay?")
+    prompt("Hit or Stay? (h or s)")
     answer = gets.chomp
-    break if answer.capitalize == 'Stay'
+    break if answer.downcase.start_with?('s')
 
     player_cards << cards.shift
   end
 
   if busted?(player_cards)
-    prompt("You busted!")
-    play_again ? next : break
+    display_winner_message(player_cards, dealer_cards, score)
+    display_score(score)
+    find_winner?(score) ? break : next
+  elsif total(player_cards) == 21
+    display_winner_message(player_cards, dealer_cards, score)
+    display_score(score)
+    find_winner?(score) ? break : next
   else
     prompt("You chose to stay.")
   end
-
   prompt("Dealer...")
   # dealer turn
-  dealer_cards = cards.pop(2)
+
   loop do
     prompt("Dealer has #{total(dealer_cards)}")
     break if total(dealer_cards) >= 17
@@ -132,15 +169,18 @@ loop do
   end
 
   if busted?(dealer_cards)
-    prompt("Dealer bust!")
-    play_again ? next : break
+    display_winner_message(player_cards, dealer_cards, score)
+    display_score(score)
+    find_winner?(score) ? break : next
   else
     prompt("Dealer stays with #{total(dealer_cards)}")
   end
-
-  results(player_cards, dealer_cards)
-  display_winner(player_cards, dealer_cards)
-  break unless play_again
+  unless find_winner?(score)
+    results(player_cards, dealer_cards)
+    display_winner_message(player_cards, dealer_cards, score)
+    display_score(score)
+  end
+  break if find_winner?(score)
 end
-
-prompt('Thanks for playing blackjack - have a good one!')
+display_winner(score)
+prompt('Thanks for playing blackjack - Have a good one!')
