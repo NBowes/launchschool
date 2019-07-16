@@ -60,6 +60,13 @@ def initalize_cards
   cards.shuffle
 end
 
+def play_again
+  prompt('----------')
+  prompt('Do you want to play again?')
+  answer = gets.chomp
+  answer.downcase.start_with?('y')
+end
+
 def prompt(msg)
   puts msg
 end
@@ -109,6 +116,7 @@ loop do
 
   if busted?(player_cards)
     prompt("You busted!")
+    play_again ? next : break
   else
     prompt("You chose to stay.")
   end
@@ -125,12 +133,14 @@ loop do
 
   if busted?(dealer_cards)
     prompt("Dealer bust!")
+    play_again ? next : break
   else
     prompt("Dealer stays with #{total(dealer_cards)}")
   end
 
   results(player_cards, dealer_cards)
   display_winner(player_cards, dealer_cards)
-
-  break
+  break unless play_again
 end
+
+prompt('Thanks for playing blackjack - have a good one!')
