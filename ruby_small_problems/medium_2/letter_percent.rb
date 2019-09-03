@@ -2,22 +2,19 @@
 
 def letter_percent(string)
   percentages = { uppercase: 0, lowercase: 0, neither: 0 }
-  uppercase = 0
-  lowercase = 0
-  neither = 0
 
   string.chars.each do |char|
     if /[a-z]/ =~ char
-      lowercase += 1
+      percentages[:lowercase] += 1
     elsif /[A-Z]/ =~ char
-      uppercase += 1
+      percentages[:uppercase] += 1
     else
-      neither += 1
+      percentages[:neither] += 1
     end
   end
-  percentages[:uppercase] = (uppercase / string.length.to_f) * 100
-  percentages[:lowercase] = (lowercase / string.length.to_f) * 100
-  percentages[:neither] = (neither / string.length.to_f) * 100
+  percentages[:uppercase] = (percentages[:uppercase] / string.length.to_f) * 100
+  percentages[:lowercase] = (percentages[:lowercase] / string.length.to_f) * 100
+  percentages[:neither] = (percentages[:neither] / string.length.to_f) * 100
   percentages
 end
 
