@@ -2,14 +2,14 @@ def bubble_sort!(arr)
   length = arr.length
   loop do
     swap = false
-      1.upto(arr.length - 1) do |num|
-        next if arr[num - 1] <= arr[num]
-        arr[num - 1], arr[num] = arr[num], arr[num - 1]
-        swap = true
+    1.upto(arr.length - 1) do |num|
+      next if arr[num - 1] <= arr[num]
+      
+      arr[num - 1], arr[num] = arr[num], arr[num - 1]
+      swap = true
     end
     length -= 1
-  break unless swap
-
+    break unless swap
   end
   arr
 end
