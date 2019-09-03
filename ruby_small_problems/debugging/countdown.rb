@@ -14,7 +14,7 @@ puts 'LAUNCH!'
 ## fixed
 
 def decrease(counter)
-  counter -  1
+  counter - 1
 end
 
 counter = 10
