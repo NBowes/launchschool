@@ -4,7 +4,7 @@ def reverse_sentence(sentence)
 
   i = 0
   while i < words.length
-    reversed_words = words[i] + reversed_words
+    reversed_words = [words[i]] + reversed_words
     i += 1
   end
 
@@ -12,4 +12,4 @@ def reverse_sentence(sentence)
 end
 
 p reverse_sentence('how are you doing')
-# => reverse_sentence.rb:7 `+': no implicit conversion of Array into String 
+# => reverse_sentence.rb:7 `+': no implicit conversion of Array into String
