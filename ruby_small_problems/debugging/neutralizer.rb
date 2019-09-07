@@ -1,18 +1,15 @@
 def neutralize(sentence)
   words = sentence.split(' ')
+  neutral_sentence = []
   words.each do |word|
-    words.delete(word) if negative?(word)
+    neutral_sentence << word unless negative?(word)
   end
 
-  words.join(' ')
+  neutral_sentence.join(' ')
 end
 
 def negative?(word)
-  [ 'dull',
-    'boring',
-    'annoying',
-    'chaotic'
-  ].include?(word)
+  %w[dull boring annoying chaotic].include?(word)
 end
 
 puts neutralize('These dull boring cards are part of a chaotic board game.')
