@@ -1,6 +1,6 @@
 class MyCar
     attr_accessor :color
-    attr_reader :year
+    attr_reader :year, :model
 
     def initialize(year, color, model)
         @year = year
@@ -36,11 +36,16 @@ class MyCar
     def self.gas_mileage(litres, kilometers)
         puts "Gas Mileage: #{litres}L per #{kilometers} kilometers"
     end
+
+    def to_s
+        puts "The #{color} #{year} #{model} is awesome"
+    end
 end
 
 westy = MyCar.new('1991', 'White','Volkswagen')
 puts westy.color
 puts westy.year
+westy.to_s
 westy.speed_up(10)
 westy.current_speed
 westy.speed_up(10)
