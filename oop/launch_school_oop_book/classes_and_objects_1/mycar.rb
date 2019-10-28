@@ -32,6 +32,10 @@ class MyCar
         self.color = color
         puts "The car got painted the color #{color}"
     end
+
+    def self.gas_mileage(litres, kilometers)
+        puts "Gas Mileage: #{litres}L per #{kilometers} kilometers"
+    end
 end
 
 westy = MyCar.new('1991', 'White','Volkswagen')
@@ -46,3 +50,5 @@ westy.brake(20)
 westy.current_speed
 westy.shut_off_car
 westy.spray_paint('Sand')
+
+MyCar.gas_mileage(10,100)
