@@ -1,8 +1,16 @@
-class MyCar
+module Carryable
+    def can_carry?(pounds)
+        pounds < 2000 ? true : false
+    end
+end
+
+class Vehicle
+    @@number_of_vehicles = 0
     attr_accessor :color
     attr_reader :year, :model
 
     def initialize(year, color, model)
+        @@number_of_vehicles += 1
         @year = year
         @color = color
         @model = model
@@ -37,18 +45,25 @@ class MyCar
         puts "Gas Mileage: #{litres}L per #{kilometers} kilometers"
     end
 
-    def to_s
-        puts "The #{color} #{year} #{model} is awesome"
+    def self.number_of_vehicles
+        puts "This program created #{@@number_of_vehicles} vehicles"
     end
+end
+
+class MyCar < Vehicle
+   DOORS = 4
+end
+
+class MyTruck < Vehicle
+    include Carryable
+    DOORS = 2
 end
 
 westy = MyCar.new('1991', 'White','Volkswagen')
 puts westy.color
 puts westy.year
-westy.to_s
 westy.speed_up(10)
 westy.current_speed
-westy.speed_up(10)
 westy.speed_up(10)
 westy.current_speed
 westy.brake(20)
@@ -57,3 +72,9 @@ westy.shut_off_car
 westy.spray_paint('Sand')
 
 MyCar.gas_mileage(10,100)
+
+ram = MyTruck.new('2020', 'Black', 'Dodge')
+puts ram.color
+puts ram.can_carry?(1950)
+
+Vehicle.number_of_vehicles
