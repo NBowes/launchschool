@@ -16,6 +16,10 @@ class Person
     self.first_name = name_parts.first
     self.last_name = name_parts.size > 1 ? name_parts.last : ' '
   end
+
+  def to_s
+    name
+  end
 end
 
 bob = Person.new('Robert')
@@ -28,3 +32,8 @@ p bob.name
 p bob.name = 'John Adams'
 p bob.first_name
 p bob.last_name
+
+rob = Person.new('Robert Smith')
+bobby = Person.new('Robert Smith')
+p rob.name == bobby.name
+puts "The persons name is: #{rob}"
