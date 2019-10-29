@@ -1,7 +1,8 @@
 class Cat
-    def initialize
-        puts "I'm a Cat!"
+    def initialize(name)
+        @name = name
+        puts "Hello, I'm #{@name}."
     end
 end
 
-kitty = Cat.new
+kitty = Cat.new('liam')
