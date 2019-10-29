@@ -1,3 +1,4 @@
+require 'Time'
 module Carryable
     def can_carry?(pounds)
         pounds < 2000 ? true : false
@@ -15,6 +16,10 @@ class Vehicle
         @color = color
         @model = model
         @current_speed = 0
+    end
+
+    def age
+        puts "The #{self.model} is #{years_old} years old."
     end
 
     def speed_up(speed)
@@ -48,6 +53,12 @@ class Vehicle
     def self.number_of_vehicles
         puts "This program created #{@@number_of_vehicles} vehicles"
     end
+
+    private
+
+    def years_old
+        Time.now.year - self.year
+    end
 end
 
 class MyCar < Vehicle
@@ -59,9 +70,10 @@ class MyTruck < Vehicle
     DOORS = 2
 end
 
-westy = MyCar.new('1991', 'White','Volkswagen')
+westy = MyCar.new(1991, 'White','Volkswagen')
 puts westy.color
 puts westy.year
+westy.age
 westy.speed_up(10)
 westy.current_speed
 westy.speed_up(10)
@@ -73,8 +85,12 @@ westy.spray_paint('Sand')
 
 MyCar.gas_mileage(10,100)
 
-ram = MyTruck.new('2020', 'Black', 'Dodge')
+ram = MyTruck.new(2017, 'Black', 'Dodge')
 puts ram.color
+ram.age
 puts ram.can_carry?(1950)
 
 Vehicle.number_of_vehicles
+puts Vehicle.ancestors
+puts MyTruck.ancestors
+puts MyCar.ancestors
