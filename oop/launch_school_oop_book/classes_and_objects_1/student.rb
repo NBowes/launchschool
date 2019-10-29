@@ -1,18 +1,18 @@
 class Student
-    def initialize(name,grade)
-        @name = name
-        @grade = grade
-    end
+	def initialize(name,grade)
+		@name = name
+		@grade = grade
+	end
 
-    def better_grade_than?(name)
-        grade > name.grade
-    end
+	def better_grade_than?(name)
+		grade > name.grade
+	end
 
-    protected 
+protected 
 
-    def grade
-        @grade
-    end
+	def grade
+		@grade
+	end
 end
 
 nate = Student.new('nate', 92)
