@@ -8,7 +8,13 @@ class Person
   end
 
   def name
-    "#{@first_name} #{@last_name}".strip
+    "#{first_name} #{last_name}".strip
+  end
+
+  def name=(full_name)
+    name_parts = full_name.split
+    self.first_name = name_parts.first
+    self.last_name = name_parts.size > 1 ? name_parts.last : ' '
   end
 end
 
@@ -18,3 +24,7 @@ p bob.first_name
 p bob.last_name
 bob.last_name = 'Smith'
 p bob.name
+
+p bob.name = 'John Adams'
+p bob.first_name
+p bob.last_name
