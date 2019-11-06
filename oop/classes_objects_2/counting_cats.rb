@@ -1,12 +1,12 @@
 class Cat
-  @@total_cats = 0
-  
+  @total_cats = 0
+
   def initialize
-    @@total_cats += 1
+    @total_cats += 1
   end
 
   def self.total
-    @@total_cats 
+    @total_cats 
   end
 end
 

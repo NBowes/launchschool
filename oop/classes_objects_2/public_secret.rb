@@ -1,6 +1,5 @@
 class Person
   attr_accessor :secret
-
 end
 
 person1 = Person.new
