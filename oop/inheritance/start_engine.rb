@@ -11,7 +11,7 @@ class Truck < Vehicle
     super
     puts 'Start your engines!'
   end
-  
+
   def start_engine
     puts 'Ready to go!'
   end

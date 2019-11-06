@@ -1,6 +1,6 @@
 module Towable
   def tow
-    puts "I can tow a trailer."
+    puts 'I can tow a trailer.'
   end
 end
 

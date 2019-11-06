@@ -8,7 +8,7 @@ end
 
 class Truck < Vehicle
   attr_reader :bed_type
-  
+
   def initialize(year, bed_type)
     super(year)
     @bed_type = bed_type
