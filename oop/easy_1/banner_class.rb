@@ -22,7 +22,6 @@ class Banner
   end
 end
 
-
 banner = Banner.new('To boldy go where no one has gone before')
 puts banner
 

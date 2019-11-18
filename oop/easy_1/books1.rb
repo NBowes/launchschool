@@ -11,6 +11,6 @@ class Book
   end
 end
 
-book = Book.new('Neil Stephenson', "Snow Crash")
+book = Book.new('Neil Stephenson', 'Snow Crash')
 puts %(The author of "#{book.title}" is #{book.author}.)
 puts %(book = #{book}.)
