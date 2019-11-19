@@ -1,6 +1,5 @@
 module Drivable
-  def drive
-  end
+  def drive; end
 end
 
 class Car

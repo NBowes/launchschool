@@ -2,7 +2,7 @@ class Transform
   def initialize(text)
     @text = text
   end
-  
+
   def uppercase
     @text.upcase
   end

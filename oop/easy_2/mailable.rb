@@ -1,7 +1,7 @@
 module Mailable
   def print_address
-    puts "#{name}"
-    puts "#{address}"
+    puts name
+    puts address
     puts "#{city}, #{state} #{zipcode}"
   end
 end
@@ -26,7 +26,7 @@ class Employee < Person
   attr_reader :name, :address, :city, :state, :zipcode
 end
 
-betty = Customer.new('Betty', '123 test customer street', 'testington', 'AL', 92034)
-bob = Employee.new('Bob', '123 test employee street', 'testerville', 'CA', 90215)
+betty = Customer.new('Betty', '123 test street', 'testington', 'AL', 92034)
+bob = Employee.new('Bob', '123 employee street', 'testville', 'CA', 90215)
 betty.print_address
 bob.print_address

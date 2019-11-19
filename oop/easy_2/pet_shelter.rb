@@ -26,7 +26,7 @@ end
 
 class Shelter
   def initialize
-    @owners = Hash.new {|h, k| h[k] = []}
+    @owners = Hash.new { |h, k| h[k] = [] }
   end
 
   def adopt(owner, pet)
@@ -35,7 +35,7 @@ class Shelter
   end
 
   def print_adoptions
-    @owners.each do |owner, pets|
+    @owners.each do |owner, _|
       puts "#{owner.name} has adopted the following pets:"
       owner.pets.each do |pet|
         puts "a #{pet.type} named #{pet.name}"
