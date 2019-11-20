@@ -5,6 +5,10 @@ class Pet
     @type = type
     @name = name
   end
+
+  def to_s
+    "a #{type} named #{name}"
+  end
 end
 
 class Owner
@@ -38,9 +42,9 @@ class Shelter
     @owners.each do |owner, _|
       puts "#{owner.name} has adopted the following pets:"
       owner.pets.each do |pet|
-        puts "a #{pet.type} named #{pet.name}"
+        puts pet
       end
-      puts "\n"
+      puts
     end
   end
 end
