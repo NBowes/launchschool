@@ -1,6 +1,6 @@
 module Walkable
   def walk
-    puts "#{name} #{gait} forward"
+    puts "#{self} #{gait} forward."
   end
 end
 
@@ -10,6 +10,10 @@ class Mammal
 
   def initialize(name)
     @name = name
+  end
+
+  def to_s
+    name
   end
 end
 
@@ -21,8 +25,27 @@ class Person < Mammal
   end
 end
 
+class Noble < Mammal
+  attr_reader :title
+
+  def initialize(name, title)
+    super(name)
+    @title = title
+  end
+
+  def to_s
+    "#{title} #{name}"
+  end
+
+  private
+
+  def gait
+    'struts'
+  end
+end
+
 class Cat < Mammal
-  private 
+  private
 
   def gait
     'saunters'
@@ -45,3 +68,6 @@ kitty.walk
 
 flash = Cheetah.new('Flash')
 flash.walk
+
+byron = Noble.new('Byron', 'Lord')
+byron.walk

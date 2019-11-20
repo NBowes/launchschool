@@ -9,8 +9,8 @@ class Expander
 
   private
 
-  def expand(n)
-    @string * n 
+  def expand(num)
+    @string * num
   end
 end
 
