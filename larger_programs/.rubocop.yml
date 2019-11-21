@@ -1,5 +1,3 @@
-# .rubocop.yml for RB101 Lessons 6 - Larger Programs
-
 AllCops:
   # Display cop names
   DisplayCopNames: true
@@ -22,6 +20,10 @@ Style/BlockComments:
 
 Style/BracesAroundHashParameters:
   Description: Forces certain brace styles when the last argument is a hash.
+  Enabled: false
+
+Style/ClassVars:
+  Description: 'Checks for uses of class variables.'
   Enabled: false
 
 Style/CommandLiteral:
@@ -66,7 +68,8 @@ Style/FrozenStringLiteralComment:
 
 Style/GuardClause:
   Description: Check for conditionals that can be replaced with guard clauses.
-  Enabled: false
+  Enabled: true
+  MinBodyLength: 1
 
 Style/HashSyntax:
   Description: >-
@@ -87,9 +90,9 @@ Style/InlineComment:
   Description: Avoid inline comments.
   Enabled: false
 
-Style/MethodCallWithoutArgsParentheses:
+Style/MethodCallParentheses:
   Description: Do not use parentheses for method calls with no arguments.
-  Enabled: true
+  Enabled: false
 
 Style/ModuleFunction:
   Description: Checks for usage of `extend self` in modules.
@@ -127,7 +130,7 @@ Style/OneLineConditional:
   Description: Favor the ternary operator(?:) over if/then/else/end constructs.
   Enabled: false
 
-Naming/BinaryOperatorParameterName:
+Style/OpMethod:
   Description: When defining binary operators, name the argument other.
   Enabled: false
 
@@ -161,6 +164,9 @@ Style/Proc:
   Description: Use proc instead of Proc.new.
   Enabled: false
 
+Style/RedundantParentheses:
+  Enabled: false
+
 Style/RedundantReturn:
   Description: "Don't use return where it's not required."
   Enabled: true
@@ -178,7 +184,7 @@ Style/SafeNavigation:
                   This cop transforms usages of a method call safeguarded by
                   a check for the existance of the object to
                   safe navigation (`&.`).
-  Enabled: false
+  Enabled: true
 
 Style/SingleLineBlockParams:
   Description: Enforces the names of some block params.
@@ -217,7 +223,8 @@ Metrics/AbcSize:
 
 Metrics/BlockLength:
   Description: Limit size of blocks.
-  Enabled: false
+  Enabled: true
+  Max: 20
 
 Metrics/ClassLength:
   Description: 'Avoid classes longer than 100 lines of code.'
@@ -234,7 +241,7 @@ Metrics/LineLength:
   - https
 
 Metrics/MethodLength:
-  Description: 'Avoid methods longer than 15 lines of code.'
+  Description: 'Avoid methods longer than 10 lines of code.'
   Enabled: true
   CountComments: false  # count full line comments?
   Max: 15
