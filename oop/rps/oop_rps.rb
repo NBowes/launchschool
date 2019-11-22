@@ -1,9 +1,24 @@
 class Player
-  attr_accessor :move
+  attr_accessor :move, :name
 
   def initialize(player_type = :human)
     @player_type = player_type
     @move = nil
+    set_name
+  end
+
+  def set_name
+    if human?
+      name = nil
+      loop do
+        puts 'What is your name?'
+        name = gets.chomp
+        break unless name.empty?
+      end
+      self.name = name.capitalize
+    else
+      self.name = [ 'Google Pixel 4XL', 'Google Pixel 3', 'Google Pixel 2XL', 'Computer'].sample
+    end
   end
 
   def choose
@@ -35,30 +50,30 @@ class RPSGame
   end
 
   def display_welcome_message
-    puts "Welcome to Rock, Paper, Scissors!"
+    puts "Welcome to Rock, Paper, Scissors #{human.name}!"
   end
 
   def display_goodbye_message
-    puts "Thanks for playing Rock, Paper, Scissors!"
+    puts "Thanks for playing Rock, Paper, Scissors #{human.name}!"
   end
 
   def display_winner
-    puts "You chose: #{human.move}"
-    puts "The computer chose: #{computer.move}"
+    puts "#{human.name} chose: #{human.move}"
+    puts "#{computer.name} chose: #{computer.move}"
 
     case human.move
     when 'rock'
       puts 'Its a tie.' if computer.move == 'rock'
-      puts 'You won!' if computer.move == 'scissors'
-      puts 'You lost :(' if computer.move == 'paper'
+      puts "#{human.name} won!" if computer.move == 'scissors'
+      puts "#{computer.name} won :(" if computer.move == 'paper'
     when 'paper'
       puts 'Its a tie.' if computer.move == 'paper'
-      puts 'You won!' if computer.move == 'rock'
-      puts 'You lost :(' if computer.move == 'scissors'
+      puts "#{human.name} won!" if computer.move == 'rock'
+      puts "#{computer.name} won :(" if computer.move == 'scissors'
     when 'scissors'
       puts 'Its a tie.' if computer.move == 'scissors'
-      puts 'You won!' if computer.move == 'paper'
-      puts 'You lost :(' if computer.move == 'rock'
+      puts "#{human.name} won!" if computer.move == 'paper'
+      puts "#{computer.name} won :(" if computer.move == 'rock'
     end
   end
 
