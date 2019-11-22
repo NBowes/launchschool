@@ -1,7 +1,7 @@
 class Player
   attr_accessor :move, :name
 
-  def initialize(player_type = :human)
+  def initialize
     set_name
   end
 end
