@@ -62,11 +62,25 @@ class RPSGame
     end
   end
 
+  def play_again?
+    answer = nil
+    loop do
+      puts "Do you want to play again? ('yes' or 'no')"
+      answer = gets.chomp
+      break if ['yes', 'no'].include? answer.downcase
+      puts "Invalid answer. Please type 'yes' or 'no'."
+    end
+    answer == 'yes'
+  end
+
   def play
     display_welcome_message
-    human.choose
-    computer.choose
-    display_winner
+    loop do
+      human.choose
+      computer.choose
+      display_winner
+      break unless play_again?
+    end
     display_goodbye_message
   end
 end
