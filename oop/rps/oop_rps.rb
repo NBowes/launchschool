@@ -1,5 +1,5 @@
 class Move
-  CHOICES = ['rock', 'paper', 'scissors']
+  CHOICES = %w[rock paper scissors].freeze
 
   def initialize(choice)
     @choice = choice
@@ -14,33 +14,19 @@ class Move
   end
 
   def scissors?
-    @scissors == 'scissors'
+    @choice == 'scissors'
   end
 
-  def >(other_choice)
-    if rock?
-      return true if other_choice.scissors?
-      return false
-    elsif paper?
-      return true if other_choice.rock?
-      return false
-    elsif scissors?
-      return true if other_choice.paper?
-      return false
-    end
+  def >(other)
+    (rock? && other.scissors?) ||
+    (paper? && other.rock?) ||
+    (scissors? && other.paper?)
   end
 
-  def <(other_choice)
-    if rock?
-      return true if other_choice.paper?
-      return false
-    elsif paper?
-      return true if other_choice.scissors?
-      return false
-    elsif scissors?
-      return true if other_choice.paper?
-      return false
-    end
+  def <(other)
+    (rock? && other.paper?) ||
+    (paper? && other.scissors?) ||
+    (scissors? && other.paper?)
   end
 
   def to_s
@@ -70,9 +56,10 @@ class Human < Player
   def choose
     choice = nil
     loop do
-      puts "Please choose rock, paper, scissors:"
+      puts 'Please choose rock, paper, scissors:'
       choice = gets.chomp
       break if Move::CHOICES.include? choice
+
       puts 'Sorry, invalid choice.'
     end
     self.move = Move.new(choice)
@@ -81,7 +68,7 @@ end
 
 class Computer < Player
   def set_name
-    self.name = [ 'Google Pixel 4XL', 'Google Pixel 3', 'Google Pixel 2XL', 'Computer'].sample
+    self.name = ['Pixel 4XL', 'Pixel 3', 'Pixel 2XL', 'Computer'].sample
   end
 
   def choose
@@ -124,6 +111,7 @@ class RPSGame
       puts "Do you want to play again? ('yes' or 'no')"
       answer = gets.chomp
       break if ['yes', 'no'].include? answer.downcase
+
       puts "Invalid answer. Please type 'yes' or 'no'."
     end
     answer == 'yes'
