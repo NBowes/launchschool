@@ -19,14 +19,14 @@ class Move
 
   def >(other)
     (rock? && other.scissors?) ||
-    (paper? && other.rock?) ||
-    (scissors? && other.paper?)
+      (paper? && other.rock?) ||
+      (scissors? && other.paper?)
   end
 
   def <(other)
     (rock? && other.paper?) ||
-    (paper? && other.scissors?) ||
-    (scissors? && other.paper?)
+      (paper? && other.scissors?) ||
+      (scissors? && other.paper?)
   end
 
   def to_s
@@ -126,24 +126,28 @@ class RPSGame
     loop do
       puts "Do you want to play again? ('yes' or 'no')"
       answer = gets.chomp
-      break if ['yes', 'no'].include? answer.downcase
+      break if %w[yes no].include? answer.downcase
 
       puts "Invalid answer. Please type 'yes' or 'no'."
     end
     answer == 'yes'
   end
 
+  def main_game
+    loop do
+      human.choose
+      computer.choose
+      display_moves
+      display_winner
+      display_score
+      break if winner?
+    end
+  end
+
   def play
     display_welcome_message
     loop do
-      loop do
-        human.choose
-        computer.choose
-        display_moves
-        display_winner
-        display_score
-        break if winner?
-      end
+      main_game
       break unless play_again?
     end
     display_goodbye_message
