@@ -29,11 +29,12 @@ class Move
 end
 
 class Player
-  attr_accessor :move, :name, :score
+  attr_accessor :move, :name, :score, :history
 
   def initialize
     set_name
     @score = 0
+    @history = []
   end
 end
 
@@ -58,6 +59,7 @@ class Human < Player
       puts 'Sorry, invalid choice.'
     end
     self.move = Move.new(choice)
+    @history << choice
   end
 end
 
@@ -67,7 +69,9 @@ class Computer < Player
   end
 
   def choose
-    self.move = Move.new(Move::CHOICES.sample)
+    choice = Move::CHOICES.sample
+    self.move = Move.new(choice)
+    @history << choice
   end
 end
 
@@ -103,6 +107,27 @@ class RPSGame
     puts "#{human.name}: #{human.score}, #{computer.name}: #{computer.score}"
     puts '----------------------'
     clear
+  end
+
+  def display_history
+    puts '----------------------'
+    puts 'Move History:'
+    puts "#{human.name}: #{human.history}, #{computer.name}: #{computer.history}"
+    puts '----------------------'
+    clear
+  end
+  
+  def want_history?
+    answer = nil
+    loop do
+      puts 'Do you want to display the move history?'
+      answer = gets.chomp
+      break if %w(yes no).include? answer.downcase
+
+      puts "Invalid answer. Please type 'yes' or 'no'."
+    end
+
+    answer == 'yes'
   end
 
   def human_won
@@ -145,6 +170,7 @@ class RPSGame
       display_moves
       display_winner
       display_score
+      display_history if want_history?
       break if winner?
     end
   end
