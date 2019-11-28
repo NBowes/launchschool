@@ -1,5 +1,3 @@
-require 'pry'
-
 class Move
   attr_accessor :choice
 
