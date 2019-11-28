@@ -1,32 +1,44 @@
 class Move
-  CHOICES = %w[rock paper scissors].freeze
+  CHOICES = %w[Rock Paper Scissors Lizard Spock].freeze
 
   def initialize(choice)
     @choice = choice
   end
 
   def rock?
-    @choice == 'rock'
+    @choice == 'Rock'
   end
 
   def paper?
-    @choice == 'paper'
+    @choice == 'Paper'
   end
 
   def scissors?
-    @choice == 'scissors'
+    @choice == 'Scissors'
+  end
+  
+  def lizard?
+    @choice == 'Lizard'
+  end
+
+  def spock?
+    @choice == 'Spock'
   end
 
   def >(other)
-    (rock? && other.scissors?) ||
-      (paper? && other.rock?) ||
-      (scissors? && other.paper?)
+    (rock? && (other.scissors? || other.lizard?)) ||
+      (paper? && (other.rock? || other.spock?)) ||
+      (scissors? && (other.paper?|| other.lizard?)) ||
+      (lizard? && (other.paper? || other.spock?)) ||
+      (spock? && (other.rock? || other.scissors?))
   end
 
   def <(other)
-    (rock? && other.paper?) ||
-      (paper? && other.scissors?) ||
-      (scissors? && other.paper?)
+    (rock? && (other.paper? || other.spock?)) ||
+      (paper? && (other.scissors? || other.lizard?)) ||
+      (scissors? && (other.rock? || other.spock?)) ||
+      (lizard? && (other.rock? || other.scissors?)) ||
+      (spock? && (other.lizard? || other.paper?))
   end
 
   def to_s
@@ -57,8 +69,8 @@ class Human < Player
   def choose
     choice = nil
     loop do
-      puts 'Please choose rock, paper, scissors:'
-      choice = gets.chomp
+      puts "Please choose #{Move::CHOICES.join(', ')}:"
+      choice = gets.chomp.capitalize
       break if Move::CHOICES.include? choice
 
       puts 'Sorry, invalid choice.'
@@ -86,11 +98,11 @@ class RPSGame
   end
 
   def display_welcome_message
-    puts "Welcome to Rock, Paper, Scissors #{human.name}!"
+    puts "Welcome to #{Move::CHOICES.join(', ')} #{human.name}!"
   end
 
   def display_goodbye_message
-    puts "Thanks for playing Rock, Paper, Scissors #{human.name}!"
+    puts "Thanks for #{Move::CHOICES.join(', ')} #{human.name}!"
   end
 
   def display_moves
@@ -122,6 +134,7 @@ class RPSGame
   end
 
   def play_again?
+    human.score == 5 ? puts('You won!!') : puts("#{computer.name} won..well that sucks...")
     answer = nil
     loop do
       puts "Do you want to play again? ('yes' or 'no')"
