@@ -110,11 +110,12 @@ class RPSGame
   def display_history
     puts '----------------------'
     puts 'Move History:'
-    puts "#{human.name}: #{human.history}, #{computer.name}: #{computer.history}"
+    puts "#{human.name}: #{human.history}"
+    puts "#{computer.name}: #{computer.history}"
     puts '----------------------'
     clear
   end
-  
+
   def want_history?
     answer = nil
     loop do
