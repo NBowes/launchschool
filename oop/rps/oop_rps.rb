@@ -11,42 +11,16 @@ class Move
               Lizard: ['Paper', 'Spock'],
               Spock: ['Rock', 'Scissors'] }
 
-  LOSES = { Rock: ['Paper', 'Spock'],
-            Paper: ['Rock', 'Spock'],
-            Scissors: ['Paper', 'Lizard'],
-            Lizard: ['Paper', 'Spock'],
-            Spock: ['Rock', 'Scissors'] }
-
   def initialize(choice)
     @choice = choice
-  end
-
-  def rock?
-    @choice == 'Rock'
-  end
-
-  def paper?
-    @choice == 'Paper'
-  end
-
-  def scissors?
-    @choice == 'Scissors'
-  end
-
-  def lizard?
-    @choice == 'Lizard'
-  end
-
-  def spock?
-    @choice == 'Spock'
   end
 
   def >(other)
     WINNERS[choice.to_sym].include? other.choice
   end
 
-  def <(other)
-    LOSES[choice.to_sym].include? other.choice
+  def ==(other)
+    choice == other.choice
   end
 
   def to_s
@@ -131,16 +105,20 @@ class RPSGame
     clear
   end
 
+  def human_won
+    puts "#{human.name} won!"
+    human.score += 1
+  end
+
+  def computer_won
+    puts "#{computer.name} won :("
+    computer.score += 1
+  end
+
   def display_winner
-    if human.move > computer.move
-      puts "#{human.name} won!"
-      human.score += 1
-    elsif human.move < computer.move
-      puts "#{computer.name} won :("
-      computer.score += 1
-    else
-      puts "It's a tie"
-    end
+    puts "It's a tie" if human.move == computer.move
+
+    human.move > computer.move ? human_won : computer_won
   end
 
   def winner?
