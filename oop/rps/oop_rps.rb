@@ -97,6 +97,11 @@ class RPSGame
     @computer = Computer.new
   end
 
+  def clear
+    sleep(2)
+    system 'clear'
+  end
+
   def display_welcome_message
     puts "Welcome to #{Move::CHOICES.join(', ')} #{human.name}!"
   end
@@ -115,6 +120,7 @@ class RPSGame
     puts 'Score:'
     puts "#{human.name}: #{human.score}, #{computer.name}: #{computer.score}"
     puts '----------------------'
+    clear
   end
 
   def display_winner
@@ -134,7 +140,7 @@ class RPSGame
   end
 
   def play_again?
-    human.score == 5 ? puts('You won!!') : puts("#{computer.name} won..well that sucks...")
+    human.score == 5 ? puts('You won!!') : puts("#{computer.name} won..")
     answer = nil
     loop do
       puts "Do you want to play again? ('yes' or 'no')"
