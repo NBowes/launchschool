@@ -1,5 +1,21 @@
+require 'pry'
+
 class Move
-  CHOICES = %w[Rock Paper Scissors Lizard Spock].freeze
+  attr_accessor :choice
+
+  CHOICES = %w(Rock Paper Scissors Lizard Spock).freeze
+
+  WINNERS = { Rock: ['Scissors', 'Lizard'],
+              Paper: ['Rock', 'Spock'],
+              Scissors: ['Paper', 'Lizard'],
+              Lizard: ['Paper', 'Spock'],
+              Spock: ['Rock', 'Scissors'] }
+
+  LOSES = { Rock: ['Paper', 'Spock'],
+            Paper: ['Rock', 'Spock'],
+            Scissors: ['Paper', 'Lizard'],
+            Lizard: ['Paper', 'Spock'],
+            Spock: ['Rock', 'Scissors'] }
 
   def initialize(choice)
     @choice = choice
@@ -16,7 +32,7 @@ class Move
   def scissors?
     @choice == 'Scissors'
   end
-  
+
   def lizard?
     @choice == 'Lizard'
   end
@@ -26,19 +42,11 @@ class Move
   end
 
   def >(other)
-    (rock? && (other.scissors? || other.lizard?)) ||
-      (paper? && (other.rock? || other.spock?)) ||
-      (scissors? && (other.paper?|| other.lizard?)) ||
-      (lizard? && (other.paper? || other.spock?)) ||
-      (spock? && (other.rock? || other.scissors?))
+    WINNERS[choice.to_sym].include? other.choice
   end
 
   def <(other)
-    (rock? && (other.paper? || other.spock?)) ||
-      (paper? && (other.scissors? || other.lizard?)) ||
-      (scissors? && (other.rock? || other.spock?)) ||
-      (lizard? && (other.rock? || other.scissors?)) ||
-      (spock? && (other.lizard? || other.paper?))
+    LOSES[choice.to_sym].include? other.choice
   end
 
   def to_s
@@ -145,7 +153,7 @@ class RPSGame
     loop do
       puts "Do you want to play again? ('yes' or 'no')"
       answer = gets.chomp
-      break if %w[yes no].include? answer.downcase
+      break if %w(yes no).include? answer.downcase
 
       puts "Invalid answer. Please type 'yes' or 'no'."
     end
