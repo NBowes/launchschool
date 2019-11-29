@@ -1,3 +1,5 @@
+require 'pry'
+
 class Move
   attr_accessor :choice
 
@@ -43,6 +45,8 @@ class Human < Player
       puts 'What is your name?'
       name = gets.chomp
       break unless name.empty?
+
+      puts 'Sorry, name cannot be blank.'
     end
     self.name = name.capitalize
   end
@@ -62,12 +66,17 @@ class Human < Player
 end
 
 class Computer < Player
+  COMPUTER_CHOICES = {
+    R2D2: ['Rock'],
+    Chewy: ['Scissors', 'Lizard', 'Spock', 'Scissors', 'Scissors'],
+    C3PO: ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock']
+  }
   def set_name
-    self.name = ['Pixel 4XL', 'Pixel 3', 'Pixel 2XL', 'Computer'].sample
+    self.name = ['R2D2', 'Chewy', 'C3PO'].sample
   end
 
   def choose
-    choice = Move::CHOICES.sample
+    choice = COMPUTER_CHOICES[name.to_sym].sample
     self.move = Move.new(choice)
     @history << choice
   end
