@@ -1,24 +1,6 @@
 # frozen_string_literal: true
 
-# Create an object-oriented number
-# guessing class for numbers in
-# the range 1 to 100
-# with a limit of 7 guesses per game.
-# The game should play like this:
-
-# You have 7 guesses remaining.
-# Enter a number between 1 and 100: 104
-# Invalid guess. Enter a number between 1 and 100: 50
-# Your guess is too low.
-
-# You have 6 guesses remaining.
-# Enter a number between 1 and 100: 75
-# Your guess is too low.
-
-# You have 5 guesses remaining.
-# Enter a number between 1 and 100: 85
-# Your guess is too high.
-
+# a guessing game class
 class GuessingGame
   attr_accessor :guesses
 
