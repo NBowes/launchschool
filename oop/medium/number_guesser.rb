@@ -46,7 +46,7 @@ class GuessingGame
     self.guesses -= 1
   end
 
-  def user_guess_message
+  def begin_game_message
     display_message("You have #{guesses} guesses remaining.")
     display_message('Enter a number between 1 and 100: ')
   end
@@ -54,7 +54,7 @@ class GuessingGame
   def validate_guess
     guess = nil
     loop do
-      user_guess_message
+      begin_game_message
       guess = gets.chomp.to_i
       break if (guess.is_a? Integer) && (RANGE.include? guess)
 
