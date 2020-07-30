@@ -6,6 +6,7 @@ class GuessingGame
 
   LOSE_MESSAGE = 'You are out of guesses. You lose.'
   WIN_MESSAGE = 'You got it! Thanks for playing.'
+  RANGE = 1..100
 
   def initialize
     @secret_number = nil
@@ -17,11 +18,7 @@ class GuessingGame
   end
 
   def end_game_message
-    if guesses.zero?
-      display_message(LOSE_MESSAGE)
-    else
-      display_message(WIN_MESSAGE)
-    end
+    guesses.zero? ? display_message(LOSE_MESSAGE) : display_message(WIN_MESSAGE)
   end
 
   def guess_logic
@@ -59,8 +56,7 @@ class GuessingGame
     loop do
       user_guess_message
       guess = gets.chomp.to_i
-      p @secret_number
-      break if (guess.is_a? Integer) && (guess > 1 && guess < 100)
+      break if (guess.is_a? Integer) && (RANGE.include? guess)
 
       display_message('Invalid guess')
     end
@@ -74,7 +70,7 @@ class GuessingGame
   private
 
   def set_secret
-    @secret_number = rand(1..100)
+    @secret_number = rand(RANGE)
   end
 end
 
