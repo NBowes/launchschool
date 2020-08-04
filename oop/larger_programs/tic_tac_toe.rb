@@ -1,6 +1,12 @@
 class Board
-  INITIAL_VALUE = ' '
   attr_reader :squares
+
+  INITIAL_VALUE = ' '
+  WINNING_LINES = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9],
+    [1, 5, 9], [3, 5, 7], [1, 4, 7],
+    [2, 5, 8], [3, 6, 9]
+  ].freeze
 
   def initialize
     @squares = {}
@@ -13,6 +19,32 @@ class Board
 
   def set_square(key, marker)
     @squares[key].marker = marker
+  end
+
+  def empty_spaces
+    squares.select do |_, square|
+      square.marker == INITIAL_VALUE
+    end.keys
+  end
+
+  def full?
+    empty_spaces.empty?
+  end
+
+  def winner?
+    player = []
+    computer = []
+
+    WINNING_LINES.each do |line|
+      player << line.select do |square|
+        squares[square].marker == 'X'
+      end
+
+      computer << line.select do |square|
+        squares[square].marker == 'O'
+      end
+    end
+    player.any?{|lines| lines.length == 3} || computer.any?{|lines| lines.length == 3}
   end
 end
 
@@ -44,7 +76,7 @@ class TTTGame
     @human = Player.new('X')
     @computer = Player.new('O')
   end
-  
+
   def display_welcome_message
     puts "Welcome to tic tac toe!"
   end
@@ -53,18 +85,12 @@ class TTTGame
     puts "Thanks for playing tic tac toe - goodbye."
   end
 
-  def empty_spaces
-    board.squares.select do |key, square|
-      square.marker == Board::INITIAL_VALUE
-    end.keys
-  end
-
   def human_moves
-    puts "pick one of the following numbers: #{empty_spaces}"
+    puts "pick one of the following numbers: #{board.empty_spaces}"
     square = nil
     loop do
       square = gets.chomp.to_i
-      break if (1..9).include?(square)
+      break if board.empty_spaces.include?(square)
 
       puts 'that is not a valid number. try again.'
     end
@@ -73,7 +99,7 @@ class TTTGame
   end
 
   def computer_moves
-    choice = empty_spaces.sample
+    choice = board.empty_spaces.sample
     board.set_square(choice, computer.marker)
   end
 
@@ -96,20 +122,12 @@ class TTTGame
     loop do
       display_board
       human_moves
-      computer_moves
-      display_board
-      human_moves
-      computer_moves
-      display_board
-      human_moves
-      computer_moves
-      display_board
-      break
-      break if someone_won? || board_full?
+      break if board.winner? || board.full?
 
       computer_moves
-      break if someone_won? || board_full?
+      break if board.winner? || board.full?
     end
+    display_board
     # display_result
     display_goodbye_message
   end
