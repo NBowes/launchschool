@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Board
   attr_reader :squares
 
@@ -10,7 +12,7 @@ class Board
 
   def initialize
     @squares = {}
-    (1..9).each {|key| @squares[key] = Square.new(INITIAL_VALUE)}
+    (1..9).each { |key| @squares[key] = Square.new(INITIAL_VALUE) }
   end
 
   def get_square(key)
@@ -31,20 +33,31 @@ class Board
     empty_spaces.empty?
   end
 
-  def winner?
+  def player_squares
     player = []
-    computer = []
-
     WINNING_LINES.each do |line|
       player << line.select do |square|
         squares[square].marker == 'X'
       end
+    end
+    player
+  end
 
+  def computer_squares
+    computer = []
+    WINNING_LINES.each do |line|
       computer << line.select do |square|
         squares[square].marker == 'O'
       end
     end
-    player.any?{|lines| lines.length == 3} || computer.any?{|lines| lines.length == 3}
+    computer
+  end
+
+  def winner?
+    player = player_squares
+    computer = computer_squares
+    player.any? { |lines| lines.length == 3 } ||
+      computer.any? { |lines| lines.length == 3 }
   end
 end
 
@@ -78,11 +91,11 @@ class TTTGame
   end
 
   def display_welcome_message
-    puts "Welcome to tic tac toe!"
+    puts 'Welcome to tic tac toe!'
   end
 
   def display_goodbye_message
-    puts "Thanks for playing tic tac toe - goodbye."
+    puts 'Thanks for playing tic tac toe - goodbye.'
   end
 
   def human_moves
@@ -92,7 +105,7 @@ class TTTGame
       square = gets.chomp.to_i
       break if board.empty_spaces.include?(square)
 
-      puts 'that is not a valid number. try again.'
+      puts 'That is not a valid number. Try again.'
     end
 
     board.set_square(square, human.marker)
@@ -104,17 +117,21 @@ class TTTGame
   end
 
   def display_board
-  puts "     |     |"
-  puts "  #{board.get_square(1)}  |  #{board.get_square(2)}  |  #{board.get_square(3)}"
-  puts "     |     |"
-  puts "-----+-----+-----"
-  puts "     |     |"
-  puts "  #{board.get_square(4)}  |  #{board.get_square(5)}  |  #{board.get_square(6)}"
-  puts "     |     |"
-  puts "-----+-----+-----"
-  puts "     |     |"
-  puts "  #{board.get_square(7)}  |  #{board.get_square(8)}  |  #{board.get_square(9)}"
-  puts "     |     |"
+    puts '     |     |'
+    puts "  #{board.get_square(1)}  |  #{board.get_square(2)}  |  #{board.get_square(3)}"
+    puts '     |     |'
+    puts '-----+-----+-----'
+    puts '     |     |'
+    puts "  #{board.get_square(4)}  |  #{board.get_square(5)}  |  #{board.get_square(6)}"
+    puts '     |     |'
+    puts '-----+-----+-----'
+    puts '     |     |'
+    puts "  #{board.get_square(7)}  |  #{board.get_square(8)}  |  #{board.get_square(9)}"
+    puts '     |     |'
+  end
+
+  def display_result
+    display_board
   end
 
   def play
@@ -127,8 +144,7 @@ class TTTGame
       computer_moves
       break if board.winner? || board.full?
     end
-    display_board
-    # display_result
+    display_result
     display_goodbye_message
   end
 end
