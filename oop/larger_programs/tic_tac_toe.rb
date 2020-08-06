@@ -97,22 +97,26 @@ class TTTGame
     @computer = Player.new('O')
   end
 
+  def print_message(message)
+    puts message
+  end
+
   def display_welcome_message
-    puts 'Welcome to tic tac toe!'
+    print_message('Welcome to tic tac toe!')
   end
 
   def display_goodbye_message
-    puts 'Thanks for playing tic tac toe - goodbye.'
+    print_message('Thanks for playing tic tac toe - goodbye.')
   end
 
   def human_moves
-    puts "pick one of the following numbers: #{board.empty_spaces}"
+    print_message("pick one of the following numbers: #{board.empty_spaces}")
     square = nil
     loop do
       square = gets.chomp.to_i
       break if board.empty_spaces.include?(square)
 
-      puts 'That is not a valid number. Try again.'
+      print_message('That is not a valid number. Try again.')
     end
 
     board.set_square(square, human.marker)
@@ -138,7 +142,13 @@ class TTTGame
   end
 
   def display_result
-    display_board
+    if board.player_won?
+      print_message('Player won!')
+    elsif board.computer_won?
+      print_message('Computer won.... blah.')
+    else
+      print_message('No one won? how...')
+    end
   end
 
   def play
