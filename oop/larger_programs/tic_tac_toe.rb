@@ -33,7 +33,7 @@ class Board
     empty_spaces.empty?
   end
 
-  def player_squares
+  def player_lines
     player = []
     WINNING_LINES.each do |line|
       player << line.select do |square|
@@ -43,7 +43,7 @@ class Board
     player
   end
 
-  def computer_squares
+  def computer_lines
     computer = []
     WINNING_LINES.each do |line|
       computer << line.select do |square|
@@ -53,11 +53,18 @@ class Board
     computer
   end
 
+  def player_won?
+    player = player_lines
+    player.any? { |lines| lines.length == 3 }
+  end
+
+  def computer_won?
+    computer = computer_lines
+    computer.any? { |lines| lines.length == 3 }
+  end
+
   def winner?
-    player = player_squares
-    computer = computer_squares
-    player.any? { |lines| lines.length == 3 } ||
-      computer.any? { |lines| lines.length == 3 }
+    player_won? || computer_won?
   end
 end
 
