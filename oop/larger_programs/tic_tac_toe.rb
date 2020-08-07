@@ -142,6 +142,7 @@ class TTTGame
   end
 
   def display_result
+    display_board
     if board.player_won?
       print_message('Player won!')
     elsif board.computer_won?
@@ -151,17 +152,38 @@ class TTTGame
     end
   end
 
-  def play
-    display_welcome_message
-    loop do
-      display_board
-      human_moves
-      break if board.winner? || board.full?
+  def valid_answer?(answer)
+    answer.downcase == 'y' || answer.downcase == 'n'
+  end
 
-      computer_moves
-      break if board.winner? || board.full?
+  def play_again?
+    print_message('Do you want to play again? (y/n)')
+    answer = nil
+    loop do
+      answer = gets.chomp
+      break if valid_answer?(answer)
+
+      print_message("Thats not a valid answer. Please choose 'y' or 'n'")
     end
-    display_result
+    return true if answer == 'y'
+
+    false
+  end
+
+  def play
+    loop do
+      display_welcome_message
+      loop do
+        display_board
+        human_moves
+        break if board.winner? || board.full?
+
+        computer_moves
+        break if board.winner? || board.full?
+      end
+      display_result
+      break unless play_again?
+    end
     display_goodbye_message
   end
 end
