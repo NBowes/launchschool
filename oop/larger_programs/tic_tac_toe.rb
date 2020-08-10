@@ -15,12 +15,19 @@ class Board
     (1..9).each { |key| @squares[key] = Square.new(INITIAL_VALUE) }
   end
 
-  def get_square(key)
-    @squares[key]
+  def computer_lines
+    computer = []
+    WINNING_LINES.each do |line|
+      computer << line.select do |square|
+        squares[square].marker == 'O'
+      end
+    end
+    computer
   end
 
-  def set_square(key, marker)
-    @squares[key].marker = marker
+  def computer_won?
+    computer = computer_lines
+    computer.any? { |lines| lines.length == 3 }
   end
 
   def empty_spaces
@@ -33,6 +40,14 @@ class Board
     empty_spaces.empty?
   end
 
+  def get_square(key)
+    @squares[key]
+  end
+
+  def set_square(key, marker)
+    @squares[key].marker = marker
+  end
+
   def player_lines
     player = []
     WINNING_LINES.each do |line|
@@ -43,24 +58,9 @@ class Board
     player
   end
 
-  def computer_lines
-    computer = []
-    WINNING_LINES.each do |line|
-      computer << line.select do |square|
-        squares[square].marker == 'O'
-      end
-    end
-    computer
-  end
-
   def player_won?
     player = player_lines
     player.any? { |lines| lines.length == 3 }
-  end
-
-  def computer_won?
-    computer = computer_lines
-    computer.any? { |lines| lines.length == 3 }
   end
 
   def winner?
@@ -97,34 +97,17 @@ class TTTGame
     @computer = Player.new('O')
   end
 
-  def print_message(message)
-    puts message
-  end
-
-  def display_welcome_message
-    print_message('Welcome to tic tac toe!')
+  def computer_moves
+    choice = board.empty_spaces.sample
+    board.set_square(choice, computer.marker)
   end
 
   def display_goodbye_message
     print_message('Thanks for playing tic tac toe - goodbye.')
   end
 
-  def human_moves
-    print_message("pick one of the following numbers: #{board.empty_spaces}")
-    square = nil
-    loop do
-      square = gets.chomp.to_i
-      break if board.empty_spaces.include?(square)
-
-      print_message('That is not a valid number. Try again.')
-    end
-
-    board.set_square(square, human.marker)
-  end
-
-  def computer_moves
-    choice = board.empty_spaces.sample
-    board.set_square(choice, computer.marker)
+  def display_welcome_message
+    print_message('Welcome to tic tac toe!')
   end
 
   def display_board
@@ -152,8 +135,17 @@ class TTTGame
     end
   end
 
-  def valid_answer?(answer)
-    answer.downcase == 'y' || answer.downcase == 'n'
+  def human_moves
+    print_message("pick one of the following numbers: #{board.empty_spaces}")
+    square = nil
+    loop do
+      square = gets.chomp.to_i
+      break if board.empty_spaces.include?(square)
+
+      print_message('That is not a valid number. Try again.')
+    end
+
+    board.set_square(square, human.marker)
   end
 
   def play_again?
@@ -165,6 +157,7 @@ class TTTGame
 
       print_message("Thats not a valid answer. Please choose 'y' or 'n'")
     end
+    @board = Board.new
     return true if answer == 'y'
 
     false
@@ -185,6 +178,14 @@ class TTTGame
       break unless play_again?
     end
     display_goodbye_message
+  end
+
+  def print_message(message)
+    puts message
+  end
+
+  def valid_answer?(answer)
+    answer.downcase == 'y' || answer.downcase == 'n'
   end
 end
 
