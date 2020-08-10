@@ -9,17 +9,19 @@ class Board
     [1, 5, 9], [3, 5, 7], [1, 4, 7],
     [2, 5, 8], [3, 6, 9]
   ].freeze
+  PLAYER_MARKER = 'X'
+  COMPUTER_MARKER = 'O'
 
   def initialize
     @squares = {}
-    (1..9).each { |key| @squares[key] = Square.new(INITIAL_VALUE) }
+    reset
   end
 
   def computer_lines
     computer = []
     WINNING_LINES.each do |line|
       computer << line.select do |square|
-        squares[square].marker == 'O'
+        squares[square].marker == COMPUTER_MARKER
       end
     end
     computer
@@ -52,7 +54,7 @@ class Board
     player = []
     WINNING_LINES.each do |line|
       player << line.select do |square|
-        squares[square].marker == 'X'
+        squares[square].marker == PLAYER_MARKER
       end
     end
     player
@@ -61,6 +63,10 @@ class Board
   def player_won?
     player = player_lines
     player.any? { |lines| lines.length == 3 }
+  end
+
+  def reset
+    (1..9).each { |key| @squares[key] = Square.new(INITIAL_VALUE) }
   end
 
   def winner?
@@ -97,6 +103,11 @@ class TTTGame
     @computer = Player.new('O')
   end
 
+  def clear_screen_and_display_board
+    system 'clear'
+    display_board
+  end
+
   def computer_moves
     choice = board.empty_spaces.sample
     board.set_square(choice, computer.marker)
@@ -111,6 +122,7 @@ class TTTGame
   end
 
   def display_board
+    puts "You are: #{human.marker} Computer is: #{computer.marker}\n\n"
     puts '     |     |'
     puts "  #{board.get_square(1)}  |  #{board.get_square(2)}  |  #{board.get_square(3)}"
     puts '     |     |'
@@ -136,7 +148,7 @@ class TTTGame
   end
 
   def human_moves
-    print_message("pick one of the following numbers: #{board.empty_spaces}")
+    print_message("Pick one of the following numbers: #{board.empty_spaces}")
     square = nil
     loop do
       square = gets.chomp.to_i
@@ -157,31 +169,44 @@ class TTTGame
 
       print_message("Thats not a valid answer. Please choose 'y' or 'n'")
     end
-    @board = Board.new
-    return true if answer == 'y'
 
-    false
+    answer == 'y'
+  end
+
+  def board_logic
+    loop do
+      human_moves
+      break if board.winner? || board.full?
+
+      computer_moves
+      break if board.winner? || board.full?
+
+      display_board
+    end
   end
 
   def play
+    display_welcome_message
+    sleep 1
+    clear_screen_and_display_board
     loop do
-      display_welcome_message
-      loop do
-        display_board
-        human_moves
-        break if board.winner? || board.full?
-
-        computer_moves
-        break if board.winner? || board.full?
-      end
+      board_logic
       display_result
       break unless play_again?
+
+      reset
     end
     display_goodbye_message
   end
 
   def print_message(message)
     puts message
+  end
+
+  def reset
+    board.reset
+    clear_screen_and_display_board
+    print_message('Lets play again!')
   end
 
   def valid_answer?(answer)
