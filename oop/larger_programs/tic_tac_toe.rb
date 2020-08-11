@@ -57,10 +57,6 @@ class Board
     empty_spaces.empty?
   end
 
-  def get_square(key)
-    @squares[key]
-  end
-
   def set_square(key, marker)
     @squares[key].marker = marker
   end
