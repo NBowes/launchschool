@@ -9,7 +9,7 @@ class Board
     [1, 5, 9], [3, 5, 7], [1, 4, 7],
     [2, 5, 8], [3, 6, 9]
   ].freeze
-  PLAYER_MARKER = 'X'
+  HUMAN_MARKER = 'X'
   COMPUTER_MARKER = 'O'
 
   def initialize
@@ -33,7 +33,7 @@ class Board
   end
 
   def display
-    puts "You are: #{PLAYER_MARKER} Computer is: #{COMPUTER_MARKER}\n\n"
+    puts "You are: #{HUMAN_MARKER} Computer is: #{COMPUTER_MARKER}\n\n"
     puts '     |     |'
     puts "  #{squares[1]}  |  #{squares[2]}  |  #{squares[3]}"
     puts '     |     |'
@@ -61,7 +61,7 @@ class Board
     player = []
     WINNING_LINES.each do |line|
       player << line.select do |square|
-        squares[square].marker == PLAYER_MARKER
+        squares[square].marker == HUMAN_MARKER
       end
     end
     player
@@ -107,11 +107,15 @@ end
 
 class TTTGame
   attr_reader :board, :human, :computer
+  attr_accessor :current_marker
+
+  FIRST_TO_MOVE = Board::HUMAN_MARKER
 
   def initialize
     @board = Board.new
-    @human = Player.new('X')
-    @computer = Player.new('O')
+    @human = Player.new(Board::HUMAN_MARKER)
+    @computer = Player.new(Board::COMPUTER_MARKER)
+    @current_marker = FIRST_TO_MOVE
   end
 
   def clear_screen_and_display_board
@@ -122,6 +126,16 @@ class TTTGame
   def computer_moves
     choice = board.empty_spaces.sample
     board[choice] = computer.marker
+  end
+
+  def current_player_moves
+    if human_turn?
+      human_moves
+      self.current_marker = computer.marker
+    else
+      computer_moves
+      self.current_marker = human.marker
+    end
   end
 
   def display_goodbye_message
@@ -156,6 +170,10 @@ class TTTGame
     board[square] = human.marker
   end
 
+  def human_turn?
+    current_marker == human.marker
+  end
+
   def play_again?
     print_message('Do you want to play again? (y/n)')
     answer = nil
@@ -169,12 +187,9 @@ class TTTGame
     answer == 'y'
   end
 
-  def board_logic
+  def board_winner_logic
     loop do
-      human_moves
-      break if board.winner? || board.full?
-
-      computer_moves
+      current_player_moves
       break if board.winner? || board.full?
 
       board.display
@@ -186,7 +201,7 @@ class TTTGame
     sleep 1
     clear_screen_and_display_board
     loop do
-      board_logic
+      board_winner_logic
       display_result
       break unless play_again?
 
@@ -201,6 +216,7 @@ class TTTGame
 
   def reset
     board.reset
+    self.current_marker = human.marker
     clear_screen_and_display_board
     print_message('Lets play again!')
   end
