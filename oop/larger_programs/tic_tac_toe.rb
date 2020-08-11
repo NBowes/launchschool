@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable convention:Style/Documentation
 class Board
   attr_reader :squares
 
@@ -31,6 +32,8 @@ class Board
     computer = computer_lines
     computer.any? { |lines| lines.length == 3 }
   end
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
 
   def display
     puts "You are: #{HUMAN_MARKER} Computer is: #{COMPUTER_MARKER}\n\n"
@@ -46,6 +49,8 @@ class Board
     puts "  #{squares[7]}  |  #{squares[8]}  |  #{squares[9]}"
     puts '     |     |'
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   def empty_spaces
     squares.select do |_, square|
@@ -84,7 +89,7 @@ class Board
     @squares[key].marker = marker
   end
 end
-
+# rubocop:disable convention:Style/Documentation
 class Square
   attr_accessor :marker
 
@@ -96,7 +101,7 @@ class Square
     @marker
   end
 end
-
+# rubocop:disable convention:Style/Documentation
 class Player
   attr_reader :marker
 
@@ -105,6 +110,7 @@ class Player
   end
 end
 
+# rubocop:disable convention:Style/Documentation
 class TTTGame
   attr_reader :board, :human, :computer
   attr_accessor :current_marker
@@ -117,6 +123,22 @@ class TTTGame
     @computer = Player.new(Board::COMPUTER_MARKER)
     @current_marker = FIRST_TO_MOVE
   end
+
+  def play
+    display_welcome_message
+    sleep 1
+    clear_screen_and_display_board
+    loop do
+      board_winner_logic
+      display_result
+      break unless play_again?
+
+      reset
+    end
+    display_goodbye_message
+  end
+
+  private
 
   def clear_screen_and_display_board
     system 'clear'
@@ -194,20 +216,6 @@ class TTTGame
 
       board.display
     end
-  end
-
-  def play
-    display_welcome_message
-    sleep 1
-    clear_screen_and_display_board
-    loop do
-      board_winner_logic
-      display_result
-      break unless play_again?
-
-      reset
-    end
-    display_goodbye_message
   end
 
   def print_message(message)
