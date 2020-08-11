@@ -57,10 +57,6 @@ class Board
     empty_spaces.empty?
   end
 
-  def set_square(key, marker)
-    @squares[key].marker = marker
-  end
-
   def player_lines
     player = []
     WINNING_LINES.each do |line|
@@ -82,6 +78,10 @@ class Board
 
   def winner?
     player_won? || computer_won?
+  end
+
+  def []=(key, marker)
+    @squares[key].marker = marker
   end
 end
 
@@ -121,7 +121,7 @@ class TTTGame
 
   def computer_moves
     choice = board.empty_spaces.sample
-    board.set_square(choice, computer.marker)
+    board[choice] = computer.marker
   end
 
   def display_goodbye_message
@@ -153,7 +153,7 @@ class TTTGame
       print_message('That is not a valid number. Try again.')
     end
 
-    board.set_square(square, human.marker)
+    board[square] = human.marker
   end
 
   def play_again?
