@@ -32,6 +32,21 @@ class Board
     computer.any? { |lines| lines.length == 3 }
   end
 
+  def display
+    puts "You are: #{PLAYER_MARKER} Computer is: #{COMPUTER_MARKER}\n\n"
+    puts '     |     |'
+    puts "  #{squares[1]}  |  #{squares[2]}  |  #{squares[3]}"
+    puts '     |     |'
+    puts '-----+-----+-----'
+    puts '     |     |'
+    puts "  #{squares[4]}  |  #{squares[5]}  |  #{squares[6]}"
+    puts '     |     |'
+    puts '-----+-----+-----'
+    puts '     |     |'
+    puts "  #{squares[7]}  |  #{squares[8]}  |  #{squares[9]}"
+    puts '     |     |'
+  end
+
   def empty_spaces
     squares.select do |_, square|
       square.marker == INITIAL_VALUE
@@ -105,7 +120,7 @@ class TTTGame
 
   def clear_screen_and_display_board
     system 'clear'
-    display_board
+    board.display
   end
 
   def computer_moves
@@ -121,23 +136,8 @@ class TTTGame
     print_message('Welcome to tic tac toe!')
   end
 
-  def display_board
-    puts "You are: #{human.marker} Computer is: #{computer.marker}\n\n"
-    puts '     |     |'
-    puts "  #{board.get_square(1)}  |  #{board.get_square(2)}  |  #{board.get_square(3)}"
-    puts '     |     |'
-    puts '-----+-----+-----'
-    puts '     |     |'
-    puts "  #{board.get_square(4)}  |  #{board.get_square(5)}  |  #{board.get_square(6)}"
-    puts '     |     |'
-    puts '-----+-----+-----'
-    puts '     |     |'
-    puts "  #{board.get_square(7)}  |  #{board.get_square(8)}  |  #{board.get_square(9)}"
-    puts '     |     |'
-  end
-
   def display_result
-    display_board
+    board.display
     if board.player_won?
       print_message('Player won!')
     elsif board.computer_won?
@@ -181,7 +181,7 @@ class TTTGame
       computer_moves
       break if board.winner? || board.full?
 
-      display_board
+      board.display
     end
   end
 
