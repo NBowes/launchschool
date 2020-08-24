@@ -67,22 +67,49 @@ class Card
   end
 end
 
-class Dealer
-  attr_accessor :cards
-
-  def initialize
-    @name = 'Dealer'
-    @cards = []
-  end
-end
-
-class Player
+class Participant
   attr_reader :name
   attr_accessor :cards
 
   def initialize(name)
     @name = name
     @cards = []
+  end
+end
+
+class Dealer < Participant
+
+  def show_cards
+    puts "Dealer has:"
+    puts cards.first
+  end
+end
+
+class Player < Participant
+
+  def busted?
+    total > 21
+  end
+
+  def show_cards
+    puts "Player has:"
+    cards.each do |card|
+      puts card
+    end
+  end
+  
+  def total
+    total = 0
+    cards.each do |card|
+      if card.ace?
+        total += 11
+      elsif card.face?
+        total += 10
+      else
+        total += card.value.to_i
+      end
+    end
+    total
   end
 
   def hit
@@ -115,7 +142,7 @@ class BlackJackGame
   def initialize
     @deck = Deck.new
     @player = Player.new('Player')
-    @dealer = Dealer.new
+    @dealer = Dealer.new('Dealer')
   end
 
   def deal_cards
@@ -129,24 +156,11 @@ class BlackJackGame
     puts message
   end
 
-  def player_total
-    total = 0
-    player.cards.each do |card|
-      if card.ace?
-        total += 11
-      elsif card.face?
-        total += 10
-      else
-        total += card.value.to_i
-      end
-    end
-    total
-  end
-
   def player_turn
-    display_message("#{player.name} score is #{player_total} ")
-    
+    return 'Player has blackjack!' unless player.total < 21 || player.busted?
+
     loop do
+      display_message("#{player.name} score is #{player.total} ")
       display_message("What do you want to do? [h = hit, s = stay]")
       answer = nil
       loop do        
@@ -157,9 +171,9 @@ class BlackJackGame
 
       if answer == 'h'
         player.cards << deck.cards.pop
-        puts player.cards
+        player.show_cards
+        break if player.busted?
       end
-      break
     end
   end
 
@@ -167,16 +181,16 @@ class BlackJackGame
     show_cards(player.cards, dealer.cards)
   end
 
+  def show_busted
+    if player.busted?
+      "Well..that's not good. You busted. Dealer wins"
+    end
+  end
+
   def show_cards(player_cards, dealer_cards)
-    puts "Player has:"
-    player_cards.each do |card|
-      display_message(card)
-    end
+    player.show_cards
     puts ""
-    puts "Dealer has:"
-    dealer_cards.each do |card|
-      display_message(card)
-    end
+    dealer.show_cards
     puts ""
   end
 
@@ -184,6 +198,7 @@ class BlackJackGame
     deal_cards
     show_initial_cards
     player_turn
+    show_busted if player.busted?
 #   dealer_turn
 #   show_result
   end
