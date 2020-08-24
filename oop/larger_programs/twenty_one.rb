@@ -75,29 +75,15 @@ class Participant
     @name = name
     @cards = []
   end
-end
-
-class Dealer < Participant
-
-  def show_cards
-    puts "Dealer has:"
-    puts cards.first
+  
+  def blackjack?
+    total == 21
   end
-end
-
-class Player < Participant
 
   def busted?
     total > 21
   end
 
-  def show_cards
-    puts "Player has:"
-    cards.each do |card|
-      puts card
-    end
-  end
-  
   def total
     total = 0
     cards.each do |card|
@@ -111,7 +97,23 @@ class Player < Participant
     end
     total
   end
+end
 
+class Dealer < Participant
+  def show_cards
+    puts "Dealer has:"
+    puts cards.first
+  end
+end
+
+class Player < Participant
+  def show_cards
+    puts "Player has:"
+    cards.each do |card|
+      puts card
+    end
+  end
+  
   def hit
   end
 
@@ -151,15 +153,32 @@ class BlackJackGame
       dealer.cards << @deck.cards.pop
     end
   end
+  
+  def dealer_turn
+    display_message("#{dealer.name} has #{dealer.total}.")
+    loop do
+      if dealer.total >= 17 && !dealer.busted?
+        puts "#{dealer.name} stays."
+        break
+      elsif dealer.busted?
+        break
+      else
+        puts "#{dealer.name} hits!"
+        dealer.cards << deck.cards.pop
+      end
+    end
+  end
 
   def display_message(message)
     puts message
   end
 
   def player_turn
-    return 'Player has blackjack!' unless player.total < 21 || player.busted?
-
     loop do
+      if player.blackjack?
+        display_message("#{player.name} has blackjack!")
+        break
+      end
       display_message("#{player.name} score is #{player.total} ")
       display_message("What do you want to do? [h = hit, s = stay]")
       answer = nil
@@ -173,6 +192,9 @@ class BlackJackGame
         player.cards << deck.cards.pop
         player.show_cards
         break if player.busted?
+      elsif answer == 's'
+        puts "#{player.name} stays. Dealer next."
+        break
       end
     end
   end
@@ -184,6 +206,8 @@ class BlackJackGame
   def show_busted
     if player.busted?
       "Well..that's not good. You busted. Dealer wins"
+    elsif dealer.busted?
+      "#{dealer.name} busted..ha.ha - oh also you win!"
     end
   end
 
@@ -193,14 +217,26 @@ class BlackJackGame
     dealer.show_cards
     puts ""
   end
+  
+  def show_result
+    puts "player total: #{player.total}"
+    puts "dealer total: #{dealer.total}"
+    if player.total > dealer.total
+      "#{player.name} wins!"
+    elsif dealer.total > player.total
+      "#{dealer.name} wins..blah."
+    else
+      "It's a tie - woh."
+    end
+  end
 
   def start
     deal_cards
     show_initial_cards
     player_turn
     show_busted if player.busted?
-#   dealer_turn
-#   show_result
+    dealer_turn unless player.blackjack?
+    show_result
   end
 end
 
